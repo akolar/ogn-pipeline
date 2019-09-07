@@ -1,0 +1,43 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:3-management
+    hostname: rabbit
+    ports:
+      - '8080:15672'
+
+  receiver: 
+    build:
+      context: ./stream-consumer
+    depends_on:
+      - rabbit
+    links:
+      - rabbit
+    restart: unless-stopped
+
+  jobmanager:
+    image: flink
+    expose:
+      - "6123"
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    env_file:
+      - ./secrets
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+
+  taskmanager:
+    image: flink
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    env_file:
+      - ./secrets
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager

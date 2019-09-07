@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package com.akolar.maxaltitude;
+
+message AircraftBeacon {
+	string message_from = 1;
+	string destto = 2;
+	string timestamp = 3;
+	double latitude = 4;
+	double longitude = 5;
+	float altitude = 22;
+	string receiver = 6;
+	string uid = 7;
+	bool stealth = 8;
+	bool do_not_track = 9;
+	string raw_message = 19;
+	string relayer = 10;
+	uint32 heading = 11;
+	float ground_speed = 12;
+	float vertical_speed = 13;
+	float turn_rate = 14;
+	float signal_to_noise_ratio = 15;
+	uint32 error_count = 16;
+	float freq_offset = 17;
+
+	enum AircraftType {
+		UNKNOWN_AIRPLANE = 0;
+		GLIDER = 1;
+		TOW_PLANE = 2;
+		HELICOPTER_ROTORCRAFT = 3;
+		PARACHUTE = 4;
+		DROP_PLANE = 5;
+		HANG_GLIDER = 6;
+		PARAGLIDER = 7;
+		POWERED_AIRCRAFT = 8;
+		JET_AIRCRAFT = 9;
+		UFO = 10;
+		BALOON = 11;
+		AIRSHIP = 12;
+		UAV = 13;
+		STATIC_OBJECT = 15;
+	}
+
+	AircraftType aircraft_type = 20;
+
+	enum AddressType {
+		UNKNOWN_ADDRESS = 0;
+		ICAO = 1;
+		FLARM = 2;
+		OGN_TRACKER = 3;
+		NAVITER = 4;
+	}
+
+	AddressType address_type = 21;
+
+	message Quality {
+		uint32 horizontal = 1;
+		uint32 vertical = 2;
+	}
+
+	Quality gps_quality = 18;
+}
